@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return  PopScope(
       canPop: false,
+      //ignore:deprecated_member_use
       onPopInvoked: (didPop){
         if(didPop){
           return;
@@ -22,36 +23,28 @@ class HomeScreen extends StatelessWidget {
              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: Expanded(
-                    child: InkWell(
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const AttendanceScreen()));
-                      },
-                      child: const Column(
-                        children: [
-                          Image(
-                            image: AssetImage('/assets/images/ic_attend.png'),
-                            height: 100,
-                            width: 100, 
-                            ),
-                            SizedBox(height:10),
-                            Text(
-                              "Attendance Repport ",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold
-                              ),
-                            )
-
-                        ],
-                      ),
-                    )
-                    ),
-                )
+                _buildMenuItem(
+                  context, 
+                  imagePath: '/assets/images/ic_attend.png', 
+                  label: 'Attendance Report', 
+                  destination: const AttendanceScreen()
+                  ),
+                const SizedBox(height: 40),
+                _buildMenuItem(
+                  context, 
+                  imagePath: '/assets/images/ic_permission.png.png', 
+                  label: 'Permission Report', 
+                  destination: const AttendanceScreen()
+                  ),
+                const SizedBox(height: 40),
+                _buildMenuItem(
+                  context, 
+                  imagePath: '/assets/images/ic_attendance_history.png.png', 
+                  label: 'History Report', 
+                  destination: const AttendanceScreen()
+                  ),
+                const SizedBox(height: 40),
+                
               ],
              )
           )
@@ -59,6 +52,44 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildMenuItem(
+    BuildContext context, {
+      required String imagePath,
+      required String label,
+      required Widget destination,
+    }) {
+    return Container(
+                margin: const EdgeInsets.all(10),
+                child: Expanded(
+                  child: InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => destination));
+                    },
+                    child: Column(
+                      children: [
+                        Image(
+                          image: AssetImage(imagePath),
+                          height: 100,
+                          width: 100, 
+                          ),
+                          const SizedBox(height:10),
+                          Text(
+                           label,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold
+                            ),
+                          )
+
+                      ],
+                    ),
+                  )
+                  ),
+              );
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
@@ -105,6 +136,8 @@ class HomeScreen extends StatelessWidget {
         ],
     )
     )
-    );
+    //defauly value ketika semua kode di blok alert dialog tidak tereksekusi karena beberapa hal
+    ) ?? 
+    false;
   }
 }
