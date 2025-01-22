@@ -133,7 +133,24 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         ),
                         )
                       ),
-                  ),             
+                  ),       
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextField(
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.text,
+                      controller: controller,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        labelText: "Your Name",
+                        hintText: "Please type ur name here",
+                        hintStyle: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey
+                        )
+                      ),
+                    ),
+                    )      
             ],
           ),
         ),
