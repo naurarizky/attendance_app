@@ -28,13 +28,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   void initState() {
-    handleLocationPermission();
-    setDateTime();
-    setAttendedStatus();
+    // handleLocationPermission();
+    // setDateTime();
+    // setAttendedStatus();
 
     if(image != null){
       isLoading = true;
-      getGeoLocationPosition();
+      // getGeoLocationPosition();
     }
   }
 
@@ -140,13 +140,25 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.text,
                       controller: controller,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                         labelText: "Your Name",
                         hintText: "Please type ur name here",
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontSize: 14,
                           color: Colors.grey
+                        ),
+                        labelStyle: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.blueAccent)
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(color: Colors.blueAccent)
                         )
                       ),
                     ),
