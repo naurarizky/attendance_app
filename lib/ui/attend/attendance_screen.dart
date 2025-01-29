@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:attendace_app/services/location_services.dart';
+import 'package:attendace_app/services/timestamp_services.dart';
 import 'package:attendace_app/ui/attend/camera_screen.dart';
 import 'package:camera/camera.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 class AttendanceScreen extends StatefulWidget {
-  final XFile image;
+  final XFile? image;
   
   const AttendanceScreen({super.key, required this.image});
 
@@ -19,22 +20,42 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   _AttendanceScreenState(this.image);
 
   XFile? image;
-  String strAddress = "", date = "", time = "", dateTime = "", status = "Attend";
+  String addressPlaceholder = "", datePlaceholder = "", timePlaceholder = "", timeStampPlaceholder = "", statusPlaceholder = "Attend";
   bool isLoading = false;
-  double lat = 0.0, long = 0.0;
-  int dateHours = 0, minuite = 0;
+  // double lat = 0.0, long = 0.0;
+  // int dateHours = 0, minuite = 0;
   final controller = TextEditingController();
-  final CollectionReference dataCollection = FirebaseFirestore.instance.collection('attendace');
+  // final CollectionReference dataCollection = FirebaseFirestore.instance.collection('attendace');
 
   @override
   void initState() {
-    // handleLocationPermission();
-    // setDateTime();
-    // setAttendedStatus();
+    super.initState();
+    handleLocationPermission(context);
+    setDateTime((date, time, timeStamp) {
+      setState(() {
+        datePlaceholder = date;
+        timePlaceholder = time; 
+        timeStampPlaceholder = timeStamp;
+      });
+    });
+    setAttendedStatus((status){
+      setState(() {
+        statusPlaceholder = status;
+      });
+    });
 
     if(image != null){
       isLoading = true;
-      // getGeoLocationPosition();
+      getGeoLocationPosition(context, (position) {
+        setState(() {
+          isLoading = false;
+          getAddressFromLongLat(position, (address){
+            setState(() {
+              addressPlaceholder = address;
+            });
+          });
+        });
+      });
     }
   }
 
