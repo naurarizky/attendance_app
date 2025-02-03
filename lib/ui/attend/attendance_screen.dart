@@ -3,6 +3,12 @@ import 'dart:io';
 import 'package:attendace_app/services/location_services.dart';
 import 'package:attendace_app/services/timestamp_services.dart';
 import 'package:attendace_app/ui/attend/camera_screen.dart';
+import 'package:attendace_app/ui/attend/components/app_bar.dart';
+import 'package:attendace_app/ui/attend/components/capture_photo.dart.dart';
+import 'package:attendace_app/ui/attend/components/header.dart';
+import 'package:attendace_app/ui/attend/components/location.dart';
+import 'package:attendace_app/ui/attend/components/name_input.dart';
+import 'package:attendace_app/ui/attend/components/submit_%20button.dart';
 import 'package:camera/camera.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +30,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   bool isLoading = false;
   // double lat = 0.0, long = 0.0;
   // int dateHours = 0, minuite = 0;
-  final controller = TextEditingController();
+  final controllerName = TextEditingController();
   // final CollectionReference dataCollection = FirebaseFirestore.instance.collection('attendace');
 
   @override
@@ -66,128 +72,27 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.blueAccent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.of(context).pop(),
-          ) ,
-          title: const Text(
-            "Attendace Report",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white
-            ),
-          ),
-      ),
+      appBar: buildAppBar(context),
       body: SingleChildScrollView(
         child: Card(
           color: Colors.white,
-          margin: EdgeInsets.fromLTRB(10, 10, 10, 30),
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 30),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          elevation: 5 ,
+          elevation: 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 50,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)
-                  ),
-                  color: Colors.blue
-                ),
-                child: const Row(
-                  children: [
-                    SizedBox(width: 12),
-                    Icon(Icons.face_retouching_natural_outlined),
-                    SizedBox(width: 12),
-                    Text(
-                      "Please Scan your Face!",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(10, 20, 0, 20),
-                child: Text(
-                  "Capture Image",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push
-                    (context, 
-                    MaterialPageRoute(builder: (context) => const CameraScreen())
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                    width: size.width,
-                    height: 150,
-                    child: DottedBorder(
-                        radius: Radius.circular(10),
-                        borderType: BorderType.RRect,
-                        color: Colors.blueAccent,
-                        strokeWidth: 1,
-                        dashPattern: [5, 5],
-                        child: SizedBox.expand(
-                          child: FittedBox(
-                            child: image != null
-                            ? Image.file(File(image!.path),  fit: BoxFit.cover)
-                            : Icon(Icons.camera_enhance_outlined)
-                            //
-                          ),
-                        ),
-                        )
-                      ),
-                  ),       
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextField(
-                      textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.text,
-                      controller: controller,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                        labelText: "Your Name",
-                        hintText: "Please type ur name here",
-                        hintStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey
-                        ),
-                        labelStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.blueAccent)
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.blueAccent)
-                        )
-                      ),
-                    ),
-                    )      
+              buildHeader(),
+              buildCapturePhotoSection(context, size, image),
+              buildNameInputField(controllerName),
+              buildLocationSection(isLoading, addressPlaceholder),
+              buildSubmitButton(context, size, image, controllerName, addressPlaceholder, statusPlaceholder, timePlaceholder)
             ],
           ),
         ),
       ),
     );
+  } 
   }
-}
