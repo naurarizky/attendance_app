@@ -1,7 +1,10 @@
-import 'package:attendace_app/services/location_services.dart';
-import 'package:attendace_app/ui/attend/components/app_bar.dart';
+import 'package:attendace_app/ui/permission/components/app_bar.dart';
+import 'package:attendace_app/ui/permission/components/form_body.dart';
+import 'package:attendace_app/ui/permission/components/form_header.dart';
+import 'package:attendace_app/ui/permission/components/submit_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
 class PermissionScreen extends StatefulWidget {
   const PermissionScreen({super.key});
@@ -16,23 +19,33 @@ class _PermissionScreenState extends State<PermissionScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context),
+      appBar:buildAppBar(context),
       body: SingleChildScrollView(
         child: Card(
           color: Colors.white,
-          margin: const EdgeInsets.fromLTRB(10, 10, 10, 30),
+          margin: EdgeInsets.fromLTRB(10,10,10,30),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10)
           ),
           elevation: 5,
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //
+              FormHeader(title: "Permission Request Form", icon: Icons.assignment)
+              FormBody(),
+              SubmitButton(
+                size: size, 
+                nameController: TextEditingController(), 
+                formController: TextEditingController(), 
+                toController: TextEditingController(), 
+                dropValueCategories: "Dropdown Controller", 
+                dataCollection: FirebaseFirestore.instance.collection('dataCollectionValue'),
+                )
             ],
           ),
         ),
       ),
     );
   }
+  
 }
