@@ -21,7 +21,20 @@ class ___AttendanceHistoryScreenStateState extends State<__AttendanceHistoryScre
       body: StreamBuilder(
         stream: dataServices.dataCollection.snapshots(), 
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-          
+          if(!snapshot.hasData){
+            return const Center(
+              child: Text("There is no data."),
+            );
+          }
+
+          final data = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index){
+              //
+            },
+          );
         }
         ),
     );
