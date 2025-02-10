@@ -31,7 +31,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FormHeader(title: "Permission Request Form", icon: Icons.assignment)
+              FormHeader(title: "Permission Request Form", icon: Icons.assignment),
               FormBody(),
               SubmitButton(
                 size: size, 
